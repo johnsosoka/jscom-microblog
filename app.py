@@ -1,7 +1,7 @@
 from flask import Flask
-from route.blueprint import blueprint
-# from flask_sqlalchemy import SQLAlchemy
+from controller.posts_admin_controller import posts_controller_admin
 
+BASE_MICRO_BLOG_PATH = '/v1/micro-blog'
 app = Flask(__name__)
 
 @app.route("/hello")
@@ -10,6 +10,5 @@ def hello_world():
 
 
 if __name__ == '__main__':
-    # db.create_all()  # Creates the table
-    app.register_blueprint(blueprint)
+    app.register_blueprint(posts_controller_admin, url_prefix=BASE_MICRO_BLOG_PATH+'/admin')
     app.run(debug=True)
