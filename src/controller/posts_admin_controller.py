@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, Flask
 posts_controller_admin = Blueprint('users', __name__)
 from service.admin_service import AdminService
 
@@ -22,3 +22,9 @@ def create_post():
 def fetch_posts():
     return admin_service.fetch_all_posts()
 
+# TODO find a way to get around this.
+def create_app():
+    app = Flask(__name__)
+    app.register_blueprint(posts_controller_admin)
+
+    return app
