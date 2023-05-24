@@ -3,6 +3,7 @@ from unittest.mock import patch
 from flask import json
 from controller.posts_admin_controller import create_app
 
+
 class TestPostsAdminController(unittest.TestCase):
 
     def setUp(self):

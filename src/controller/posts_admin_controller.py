@@ -7,20 +7,21 @@ admin_service = AdminService()
 
 @posts_controller_admin.route('/posts', methods=['POST'])
 def create_post():
-    print("inside POST")
+    response_body = {"status": "success"}
     body = ""
     try:
         body = request.get_json()["post_text"]
     except KeyError as e:
-        return "Bad Request"
+        response_body["status"] = "failure"
+        response_body["reason"] = "missing mandatory field, <post_text>"
+        return response_body, 400
 
     admin_service.create_post(body)
-    print(body)
-    return "Good bye. (POST)"
+    return response_body, 201
 
 @posts_controller_admin.route('/posts', methods=['GET'])
 def fetch_posts():
-    return admin_service.fetch_all_posts()
+    return admin_service.fetch_all_posts(), 200
 
 # TODO find a way to get around this.
 def create_app():

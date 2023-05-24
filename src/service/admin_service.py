@@ -31,6 +31,7 @@ class AdminService:
         all_post_json = []
         for post in all_posts:
             all_post_json.append({
+                "id": post.id,
                 "content": post.content,
                 "visible": post.visible,
                 "created": post.created,
