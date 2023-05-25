@@ -42,7 +42,9 @@ def create_post():
         response_body["reason"] = "missing mandatory field, <post_text>"
         return response_body, 400
 
-    admin_service.create_post(body)
+    # Create the post & return the generated id.
+    post_id = admin_service.create_post(body)
+    response_body["post_id"] = post_id
     return response_body, 201
 
 @posts_controller_admin.route('/posts', methods=['GET'])

@@ -22,15 +22,19 @@ class AdminService:
             created=datetime.datetime.now(),
             visible=True
         )
+        return new_post.id
 
     def update_post(self, post_id, post_json: dict):
         try:
             post = Post.get(Post.id == post_id)
         except Post.DoesNotExist:
             raise ValueError("Post with ID does not exist.")
+        # All other post fields should not be editable.
+        if "content" in post_json:
+            post.content = self.markdown_to_html_links(post_json["content"])
+        if "visible" in post_json:
+            post.visible = post_json["visible"]
 
-        post.content = self.markdown_to_html_links(post_json["content"])
-        post.visible = post_json["visible"]
         post.edited = datetime.datetime.now()
         post.save()
 
