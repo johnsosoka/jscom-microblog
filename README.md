@@ -31,6 +31,7 @@ Example client get all posts
 2. Initialize the database.
    1. navigate to initialization script `cd ./etc/` 
    2. execute initialization script `python3 initialize_db.py`
+   3. if prompted, create a username & password. Save these, they will be required for basic http auth on authenticated admin requests.
 
 The above should have created a new file `microblog.db` in the root folder of the project directory. You should now be
 able to run the application, `python3 ./app.py`
@@ -42,6 +43,9 @@ Optionally, you can import the postman collection located in the `./etc/postman`
 ## API Methods
 
 ### Admin
+
+All admin routes require basic http auth. If a user does not exist, you should have been prompted to create a new user 
+when running the `initialize_db.py` script from before.
 
 #### CREATE POST
 - **Endpoint:** `/v1/micro-blog/admin/posts`
@@ -193,7 +197,8 @@ Optionally, you can import the postman collection located in the `./etc/postman`
 
 
 ## TODO
-* dockerize
-* secure admin endpoints
-* tidy up / parameterize postman with env configs
-* sort out hosting
+- [ ] Dockerize
+- [ ] Secure admin endpoints
+- [ ] Tidy up / parameterize Postman with env configs
+- [ ] Implement pagination
+- [ ] Sort out hosting
