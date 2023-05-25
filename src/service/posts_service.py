@@ -9,8 +9,6 @@ class PostsService:
                 "id": post.id,
                 "content": post.content,
                 "created": post.created,
-                "visible": post.visible,
-                "deleted": post.deleted,
                 "edited": post.edited
             })
 
@@ -26,4 +24,4 @@ class PostsService:
                 "edited": post.edited
             }
         except Post.DoesNotExist:
-            return []
+            return None

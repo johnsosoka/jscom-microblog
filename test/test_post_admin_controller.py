@@ -13,7 +13,7 @@ class TestPostsAdminController(unittest.TestCase):
     @patch('controller.posts_admin_controller.admin_service.create_post')
     def test_create_post(self, mock_create_post):
         response = self.client.post('/posts', data=json.dumps({"post_text": "Hello, World!"}), content_type='application/json')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
         mock_create_post.assert_called_with("Hello, World!")
 
     @patch('controller.posts_admin_controller.admin_service.fetch_all_posts')

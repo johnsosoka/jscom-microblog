@@ -23,6 +23,17 @@ class AdminService:
             visible=True
         )
 
+    def update_post(self, post_id, post_json: dict):
+        try:
+            post = Post.get(Post.id == post_id)
+        except Post.DoesNotExist:
+            raise ValueError("Post with ID does not exist.")
+
+        post.content = self.markdown_to_html_links(post_json["content"])
+        post.visible = post_json["visible"]
+        post.edited = datetime.datetime.now()
+        post.save()
+
     """
     The admin fetch returns invisible posts + more timestamp details.
     """
@@ -39,3 +50,17 @@ class AdminService:
             })
 
         return all_post_json
+
+
+    def fetch_post(self, post_id):
+        try:
+            post = Post.get(Post.id == post_id)
+            return {
+                "id": post.id,
+                "content": post.content,
+                "visible": post.visible,
+                "created": post.created,
+                "edited": post.edited
+            }
+        except Post.DoesNotExist:
+            return None

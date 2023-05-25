@@ -1,9 +1,16 @@
 from entity.post import Post
 from dao.database import db
 
+
 def initialize_database():
-     db.create_tables([Post])
+    db.create_tables([Post])
+
 
 print("initializing database...")
-initialize_database()
-print("done.")
+try:
+    initialize_database()
+except Exception as e:
+    print("Something went wrong...")
+    print(str(e))
+
+print("finished.")
