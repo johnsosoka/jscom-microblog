@@ -1,0 +1,232 @@
+{
+	"info": {
+		"_postman_id": "cff9c8f4-b3f7-4570-9813-e99a26c74243",
+		"name": "jscom-microblog admin/client",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18046817"
+	},
+	"item": [
+		{
+			"name": "CREATE POST",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"post_text\": \"Ensuring I can still create posts\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:5000/v1/micro-blog/admin/posts",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"micro-blog",
+						"admin",
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FETCH POSTS (admin)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "hello from postman"
+				},
+				"url": {
+					"raw": "127.0.0.1:5000/v1/micro-blog/admin/posts",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"micro-blog",
+						"admin",
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FETCH POST (admin)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "hello from postman"
+				},
+				"url": {
+					"raw": "127.0.0.1:5000/v1/micro-blog/admin/posts/1",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"micro-blog",
+						"admin",
+						"posts",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE POST (admin)",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"content\": \" Post with a link to <a href=\\\"https://www.johnsosoka.com\\\">my website</a>. If it works as expected, it should be saved to the db as an href. Making another change\",\n    \"id\": 1,\n    \"visible\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:5000/v1/micro-blog/admin/posts/1",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"micro-blog",
+						"admin",
+						"posts",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "HEALTHCHECK",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "hello from postman"
+				},
+				"url": {
+					"raw": "127.0.0.1:5000/healthcheck",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"healthcheck"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FETCH POSTS (client)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "hello from postman"
+				},
+				"url": {
+					"raw": "127.0.0.1:5000/v1/micro-blog/posts",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"micro-blog",
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FETCH POST (client)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "hello from postman"
+				},
+				"url": {
+					"raw": "127.0.0.1:5000/v1/micro-blog/posts/7",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"micro-blog",
+						"posts",
+						"7"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

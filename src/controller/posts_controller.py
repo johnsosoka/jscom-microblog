@@ -14,5 +14,6 @@ def fetch_posts():
 def fetch_post(post_id):
     post = posts_service.fetch_post(post_id)
     if not post:
-        return post, 404
+        return {"status": "failure",
+                "reason": "post id: {post_id} doesn't exist".format(post_id=post_id)}, 404
     return [post], 200
