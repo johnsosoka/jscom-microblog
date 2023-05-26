@@ -1,13 +1,17 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from service.posts_service import PostsService
 
 posts_controller = Blueprint('posts', __name__)
 
 posts_service = PostsService()
 
+
 @posts_controller.route('/posts', methods=['GET'])
 def fetch_posts():
-    posts = posts_service.fetch_all_visible_posts()
+    order_by = request.args.get('order_by', 'desc')
+    page = int(request.args.get('page', '1'))
+    per_page = int(request.args.get('per_page', '10'))
+    posts = posts_service.fetch_all_visible_posts(order_by, page, per_page)
     return jsonify(posts), 200
 
 @posts_controller.route('/posts/<int:post_id>', methods=['GET'])

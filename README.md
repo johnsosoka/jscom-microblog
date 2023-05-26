@@ -131,7 +131,7 @@ when running the `initialize_db.py` script from before.
 
     **204 NO CONTENT**
 
-### HEALTHCHECK
+#### HEALTHCHECK
 - **Endpoint:** `/healthcheck`
 - **Method:** `GET`
 - **Example Response:**
@@ -197,8 +197,11 @@ when running the `initialize_db.py` script from before.
 
 
 ## TODO
+- [ ] JWT Auth
+- [x] Implement pagination
+- [ ] YML config / support multiple env configs
 - [ ] Dockerize
-- [ ] Secure admin endpoints
-- [ ] Tidy up / parameterize Postman with env configs
-- [ ] Implement pagination
-- [ ] Sort out hosting
+- [ ] Blueprint service based healthcheck.
+- [x] Secure admin endpoints
+- [x] Tidy up / parameterize Postman with env configs
+

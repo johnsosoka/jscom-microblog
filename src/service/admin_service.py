@@ -41,9 +41,15 @@ class AdminService:
     """
     The admin fetch returns invisible posts + more timestamp details.
     """
-    def fetch_all_posts(self):
-        all_posts = Post.select()
+    def fetch_all_posts(self, order_by="desc", page=1, per_page=10):
+        if order_by.lower() == "asc":
+            all_posts = Post.select().order_by(Post.created.asc())
+        else:  # Default is desc
+            all_posts = Post.select().order_by(Post.created.desc())
+
+        all_posts = all_posts.paginate(page, per_page)
         all_post_json = []
+
         for post in all_posts:
             all_post_json.append({
                 "id": post.id,

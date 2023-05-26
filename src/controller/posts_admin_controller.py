@@ -50,7 +50,11 @@ def create_post():
 @posts_controller_admin.route('/posts', methods=['GET'])
 @auth.login_required
 def fetch_posts():
-    return admin_service.fetch_all_posts(), 200
+    order_by = request.args.get('order_by', 'desc')
+    page = int(request.args.get('page', '1'))
+    per_page = int(request.args.get('per_page', '5'))
+
+    return admin_service.fetch_all_posts(order_by, page, per_page), 200
 
 @posts_controller_admin.route('/posts/<int:post_id>', methods=['PUT'])
 @auth.login_required
