@@ -21,17 +21,14 @@ def create_admin_user():
     except IntegrityError:
         logging.error("A user with this username already exists.")
 
-# TODO REMOVE, instead check for any user...or add column for account type?
-def get_admin_user():
-    try:
-        return User.get(User.username == "admin")
-    except User.DoesNotExist:
-        return None
+# This is a 1 user application.
+def any_user_exists():
+    return User.select().exists()
 
 logging.info("initializing database...")
 try:
     initialize_database()
-    admin = get_admin_user()
+    admin = any_user_exists()
     if admin is None:
         admin = create_admin_user()
         logging.info(f"Admin user created with username: {admin.username}")

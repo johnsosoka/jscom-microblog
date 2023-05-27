@@ -1,4 +1,7 @@
+from werkzeug.security import check_password_hash
+from peewee import DoesNotExist
 from entity.post import Post
+from entity.user import User
 import datetime
 import re
 
@@ -38,12 +41,41 @@ class AdminService:
         post.edited = datetime.datetime.now()
         post.save()
 
-    """
-    The admin fetch returns invisible posts + more timestamp details.
-    """
-    def fetch_all_posts(self):
-        all_posts = Post.select()
+    def get_user_and_verify_password(self, username, password):
+        user = User.get(User.username == username)
+        if user is None or not self.verify_password(username, password):
+            return None
+
+        return user
+
+    @staticmethod
+    def verify_password(username, password):
+        try:
+            user = User.get(User.username == username)
+        except DoesNotExist:
+            # User not found in the database
+            return False
+
+        if check_password_hash(user.password, password):
+            # Updates last_login timestamp
+            user.last_login = datetime.datetime.now()
+            user.save()
+            return True
+
+        return False
+
+    def fetch_all_posts(self, order_by="desc", page=1, per_page=10):
+        """
+        The admin fetch returns invisible posts + more timestamp details.
+        """
+        if order_by.lower() == "asc":
+            all_posts = Post.select().order_by(Post.created.asc())
+        else:  # Default is desc
+            all_posts = Post.select().order_by(Post.created.desc())
+
+        all_posts = all_posts.paginate(page, per_page)
         all_post_json = []
+
         for post in all_posts:
             all_post_json.append({
                 "id": post.id,
