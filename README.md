@@ -39,11 +39,12 @@ able to run the application, `python3 ./app.py`
 
 Optionally, you can import the postman collection located in the `./etc/postman` directory.
 
-### db_tools.py
+### tools.py
 
-Within the etc folder is a file `db_tools.py`, this is a helper script that can assist with some basic troubleshooting
-and management. It can test passwords, reset passwords, list, and delete users. If you forget the admin password configured
-during initialization this script can be used to recover the admin account.
+Within the etc folder is a file `tools.py`, this is a helper script that can assist with some basic troubleshooting
+and management. It can test passwords, generate base64 passwords (used for login), reset passwords, list, and 
+delete users. If you forget the admin password configured during initialization this script can be used to recover 
+the admin account.
 
 ## API Methods
 
