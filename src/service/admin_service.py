@@ -43,12 +43,13 @@ class AdminService:
 
     def get_user_and_verify_password(self, username, password):
         user = User.get(User.username == username)
-        if user is None or not verify_password(username, password):
+        if user is None or not self.verify_password(username, password):
             return None
 
         return user
 
-    def verify_password(self, username, password):
+    @staticmethod
+    def verify_password(username, password):
         try:
             user = User.get(User.username == username)
         except DoesNotExist:
@@ -62,10 +63,11 @@ class AdminService:
             return True
 
         return False
-    """
-    The admin fetch returns invisible posts + more timestamp details.
-    """
+
     def fetch_all_posts(self, order_by="desc", page=1, per_page=10):
+        """
+        The admin fetch returns invisible posts + more timestamp details.
+        """
         if order_by.lower() == "asc":
             all_posts = Post.select().order_by(Post.created.asc())
         else:  # Default is desc

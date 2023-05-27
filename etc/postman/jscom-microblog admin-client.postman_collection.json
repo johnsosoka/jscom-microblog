@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "CREATE POST",
+			"name": "LOGIN (admin)",
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -28,7 +28,50 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"post_text\": \"Testing post creation with auth required.\"\n}",
+					"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"cGFzc3dvcmQ=\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:5000/v1/micro-blog/admin/login",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"v1",
+						"micro-blog",
+						"admin",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE POST (admin)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"post_text\": \"What a beautiful morning.\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -61,16 +104,11 @@
 			},
 			"request": {
 				"auth": {
-					"type": "basic",
-					"basic": [
+					"type": "bearer",
+					"bearer": [
 						{
-							"key": "username",
-							"value": "{{USERNAME}}",
-							"type": "string"
-						},
-						{
-							"key": "password",
-							"value": "{{PASSWORD}}",
+							"key": "token",
+							"value": "{{Token}}",
 							"type": "string"
 						}
 					]
@@ -79,7 +117,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "hello from postman"
+					"raw": ""
 				},
 				"url": {
 					"raw": "127.0.0.1:5000/v1/micro-blog/admin/posts?page=1&per_page=5",
@@ -113,7 +151,77 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "FETCH POSTS (admin)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "hello from postman"
+						},
+						"url": {
+							"raw": "127.0.0.1:5000/v1/micro-blog/admin/posts?page=1&per_page=5",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"v1",
+								"micro-blog",
+								"admin",
+								"posts"
+							],
+							"query": [
+								{
+									"key": "order_by",
+									"value": "asc",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/2.3.4 Python/3.9.6"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 27 May 2023 00:24:08 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "960"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"content\": \"Creating a post should now return the id of the new post.\",\n        \"created\": \"Thu, 25 May 2023 06:24:49 GMT\",\n        \"edited\": \"Thu, 25 May 2023 06:24:49 GMT\",\n        \"id\": 10,\n        \"visible\": 1\n    },\n    {\n        \"content\": \"Testing post creation with auth required.\",\n        \"created\": \"Wed, 24 May 2023 19:25:54 GMT\",\n        \"edited\": \"Wed, 24 May 2023 19:25:54 GMT\",\n        \"id\": 9,\n        \"visible\": 1\n    },\n    {\n        \"content\": \"Test post creation\",\n        \"created\": \"Wed, 24 May 2023 17:53:17 GMT\",\n        \"edited\": \"Wed, 24 May 2023 17:53:17 GMT\",\n        \"id\": 8,\n        \"visible\": 1\n    },\n    {\n        \"content\": \"Ensuring I can still create posts\",\n        \"created\": \"Wed, 24 May 2023 06:44:00 GMT\",\n        \"edited\": \"Wed, 24 May 2023 06:44:00 GMT\",\n        \"id\": 7,\n        \"visible\": 1\n    },\n    {\n        \"content\": \"Using chatGPT as a copilot has been legit!\",\n        \"created\": \"Tue, 23 May 2023 21:17:43 GMT\",\n        \"edited\": \"Tue, 23 May 2023 21:17:43 GMT\",\n        \"id\": 6,\n        \"visible\": 1\n    }\n]"
+				}
+			]
 		},
 		{
 			"name": "FETCH POST (admin)",
@@ -122,16 +230,11 @@
 			},
 			"request": {
 				"auth": {
-					"type": "basic",
-					"basic": [
+					"type": "bearer",
+					"bearer": [
 						{
-							"key": "username",
-							"value": "{{USERNAME}}",
-							"type": "string"
-						},
-						{
-							"key": "password",
-							"value": "{{PASSWORD}}",
+							"key": "token",
+							"value": "{{Token}}",
 							"type": "string"
 						}
 					]
@@ -166,16 +269,11 @@
 			"name": "UPDATE POST (admin)",
 			"request": {
 				"auth": {
-					"type": "basic",
-					"basic": [
+					"type": "bearer",
+					"bearer": [
 						{
-							"key": "username",
-							"value": "{{USERNAME}}",
-							"type": "string"
-						},
-						{
-							"key": "password",
-							"value": "{{PASSWORD}}",
+							"key": "token",
+							"value": "{{Token}}",
 							"type": "string"
 						}
 					]
@@ -320,11 +418,15 @@
 	"variable": [
 		{
 			"key": "ADMIN_PASSWORD",
-			"value": "<replace>"
+			"value": "smooth12"
 		},
 		{
 			"key": "ADMIN_USERNAME",
-			"value": "<replace>"
+			"value": "admin"
+		},
+		{
+			"key": "Token",
+			"value": "Token}}"
 		}
 	]
 }

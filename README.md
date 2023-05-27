@@ -2,8 +2,6 @@
 
 _Built with python, flask, peewee, sqlite3 & chatGPT._
 
-A microblog backend for [my personal website](https://www.johnsosoka.com/bits/). 
-
 This is a very simple microblog service. It allows a single user, the admin to publish, edit & delete posts. For 
 clients, it allows for the fetching of all posts or a single post. 
 
@@ -40,6 +38,12 @@ able to run the application, `python3 ./app.py`
 ### Postman
 
 Optionally, you can import the postman collection located in the `./etc/postman` directory.
+
+### db_tools.py
+
+Within the etc folder is a file `db_tools.py`, this is a helper script that can assist with some basic troubleshooting
+and management. It can test passwords, reset passwords, list, and delete users. If you forget the admin password configured
+during initialization this script can be used to recover the admin account.
 
 ## API Methods
 

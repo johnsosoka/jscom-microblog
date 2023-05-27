@@ -4,13 +4,18 @@ from peewee import DoesNotExist
 from termcolor import cprint
 from werkzeug.security import check_password_hash, generate_password_hash
 from entity.user import User
+from base64 import b64encode
+
 
 def list_users():
+    """List users"""
     users = User.select()
     for user in users:
         print(f'Username: {user.username}, Created: {user.created}, Last login: {user.last_login}')
 
+
 def test_password():
+    """Test password"""
     username = input('Enter username: ')
     try:
         user = User.get(User.username == username)
@@ -23,7 +28,9 @@ def test_password():
     else:
         print('Password is incorrect')
 
+
 def delete_user():
+    """Delete user"""
     username = input('Enter username to delete: ')
     try:
         user = User.get(User.username == username)
@@ -33,7 +40,9 @@ def delete_user():
     user.delete_instance()
     print('User deleted')
 
+
 def change_password():
+    """Change password"""
     username = input('Enter username: ')
     try:
         user = User.get(User.username == username)
@@ -45,27 +54,45 @@ def change_password():
     user.save()
     print('Password updated')
 
+
+def base64_encode_password():
+    """Encode password"""
+    password = getpass.getpass('Enter password to encode: ')
+    encoded_password = b64encode(password.encode()).decode()
+    print(f'Encoded password: {encoded_password}')
+
+
+def exit_program():
+    """Exit"""
+    print("Exiting.")
+    exit()
+
+
 def main():
+    options = {
+        '1': list_users,
+        '2': test_password,
+        '3': delete_user,
+        '4': change_password,
+        '5': base64_encode_password,
+        '6': exit_program
+    }
+
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')  # Clear the terminal
-        print('1. List users')
-        print('2. Test password')
-        print('3. Delete user')
-        print('4. Change password')
-        print('5. Exit')
+        for key, func in options.items():
+            print(f"{key}. {func.__doc__}")
         option = input('Select an option: ')
-        if option == '1':
-            list_users()
-        elif option == '2':
-            test_password()
-        elif option == '3':
-            delete_user()
-        elif option == '4':
-            change_password()
-        elif option == '5':
-            break
+
+        func = options.get(option)
+
+        if func:
+            func()
         else:
             print('Invalid option')
+
+
+os.system('cls' if os.name == 'nt' else 'clear')  # Clear the terminal
 
 if __name__ == '__main__':
     main()
