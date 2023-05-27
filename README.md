@@ -1,9 +1,10 @@
 # jscom-microblog
 
-A microblog backend for [my personal website](https://www.johnsosoka.com/bits/) . Built with python, flask, peewee, 
-sqlite3 & chatGPT.
+_Built with python, flask, peewee, sqlite3 & chatGPT._
 
-This is a very simple microblog service. It allows a single user, the admin to publish, edit & delete tiny posts. For 
+A microblog backend for [my personal website](https://www.johnsosoka.com/bits/). 
+
+This is a very simple microblog service. It allows a single user, the admin to publish, edit & delete posts. For 
 clients, it allows for the fetching of all posts or a single post. 
 
 Example client get all posts
@@ -43,9 +44,39 @@ Optionally, you can import the postman collection located in the `./etc/postman`
 ## API Methods
 
 ### Admin
+This is a very simple application and there is really only one user, the admin. The admin endpoints are where posts can be
+created & edited. The admin fetch post methods will return posts marked invisible as well as visible posts.
+
+
+Performing administrative actions requires a JWT token, you can acquire one by logging in. After successful login, an
+access token is returned. This token should be used as a bearer token in subsequent admin requests.
+
+**Example Request Header** 
+```
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4NTE0NzAzNiwianRpIjoiMmQ3ZTYwYTQtNDlmZi00MTA0LWFkZDYtNWRlZDkzY2VhNzAxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFkbWluIiwibmJmIjoxNjg1MTQ3MDM2LCJleHAiOjE2ODUxNDc5MzZ9.jss68Wz8WEplyzFwJfpL3MBeGrCwvzTLQS09zoVHmHU 
+```
 
 All admin routes require basic http auth. If a user does not exist, you should have been prompted to create a new user 
 when running the `initialize_db.py` script from before.
+
+### LOGIN
+- **Endpoint:** `/v1/micro-blog/admin/login`
+- **Method:** `POST`
+- **Description:** Creates a new post.
+- **Payload:**
+    ```json
+    {
+        "username": "admin",
+        "password": "cGFzc3dvcmQ"
+    }
+    ```
+- **Example Response:**
+    ```json
+    {
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY4NTE0NTY4OCwianRpIjoiZDQwNWQ5ODItZTQzZS00YzRiLTkwOTEtN2UyN2ZmY2JkOTBjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImFkbWluIiwibmJmIjoxNjg1MTQ1Njg4LCJleHAiOjE2ODUxNDY1ODh9.HpgJ6UjWOOYL7Ze4XWzAMuinokONS-A9vpOeXnIge-U"
+    }
+    ```
+=
 
 #### CREATE POST
 - **Endpoint:** `/v1/micro-blog/admin/posts`
@@ -197,11 +228,14 @@ when running the `initialize_db.py` script from before.
 
 
 ## TODO
-- [ ] JWT Auth
-- [x] Implement pagination
+
 - [ ] YML config / support multiple env configs
+- [ ] Administration UI, set up routes to return json or html depending on `Content-Type` in request.
 - [ ] Dockerize
+- [ ] centralized error handling `app_errorhandler`
 - [ ] Blueprint service based healthcheck.
 - [x] Secure admin endpoints
+- [x] JWT Auth
+- [x] Implement pagination
 - [x] Tidy up / parameterize Postman with env configs
 

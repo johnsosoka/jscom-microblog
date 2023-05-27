@@ -1,37 +1,64 @@
-from flask import Blueprint, request, Flask
+from flask import Blueprint, request, Flask, jsonify
 from flask_httpauth import HTTPBasicAuth
-from werkzeug.security import check_password_hash
-from entity.user import User
-from peewee import DoesNotExist
-import datetime
+from base64 import b64decode, b64encode
 
-posts_controller_admin = Blueprint('users', __name__)
+
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token
+)
 from service.admin_service import AdminService
-
-
 admin_service = AdminService()
 
+jwt = JWTManager()
+
+posts_controller_admin = Blueprint('users', __name__)
 auth = HTTPBasicAuth()
 
-@auth.verify_password
-def verify_password(username, password):
+def is_base64(s):
     try:
-        user = User.get(User.username == username)
-    except DoesNotExist:
-        # User not found in the database
+        return b64encode(b64decode(s)).decode() == s
+    except Exception:
         return False
 
-    if check_password_hash(user.password, password):
-        # Updates last_login timestamp
-        user.last_login = datetime.datetime.now()
-        user.save()
-        return True
 
-    return False
+@posts_controller_admin.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"message": "Missing JSON in request"}), 400
+
+    # Extract and validate username and password
+    username = data.get('username')
+    password = data.get('password')
+
+    if not username or not password:
+        return jsonify({"message": "Missing username or password"}), 400
+
+    # Decode password base64 encoded password
+    if not is_base64(password):
+        return jsonify({"message": "password must be base64 encoded."}), 400
+    password = b64decode(password).decode()
+
+    # Fetch user from database
+    user = admin_service.get_user_and_verify_password(username, password)
+
+    if user is None:
+        return jsonify({"message": "Bad username or password"}), 401
+
+    # User is validated at this point
+    access_token = create_access_token(identity=username)
+
+    return jsonify(access_token=access_token), 200
+
+
+#@auth.verify_password
+
 
 
 @posts_controller_admin.route('/posts', methods=['POST'])
-@auth.login_required
+# @auth.login_required
+@jwt_required()
 def create_post():
     response_body = {"status": "success"}
     body = ""
@@ -48,7 +75,8 @@ def create_post():
     return response_body, 201
 
 @posts_controller_admin.route('/posts', methods=['GET'])
-@auth.login_required
+# @auth.login_required
+@jwt_required()
 def fetch_posts():
     order_by = request.args.get('order_by', 'desc')
     page = int(request.args.get('page', '1'))
@@ -57,7 +85,8 @@ def fetch_posts():
     return admin_service.fetch_all_posts(order_by, page, per_page), 200
 
 @posts_controller_admin.route('/posts/<int:post_id>', methods=['PUT'])
-@auth.login_required
+# @auth.login_required
+@jwt_required()
 def update_post(post_id):
     response_body = {"status": "success"}
     body = ""
@@ -78,7 +107,8 @@ def update_post(post_id):
     return response_body, 204
 
 @posts_controller_admin.route('/posts/<int:post_id>', methods=['GET'])
-@auth.login_required
+# @auth.login_required
+@jwt_required()
 def fetch_post(post_id):
     post = admin_service.fetch_post(post_id)
     if post is None:

@@ -1,4 +1,7 @@
+from werkzeug.security import check_password_hash
+from peewee import DoesNotExist
 from entity.post import Post
+from entity.user import User
 import datetime
 import re
 
@@ -38,6 +41,27 @@ class AdminService:
         post.edited = datetime.datetime.now()
         post.save()
 
+    def get_user_and_verify_password(self, username, password):
+        user = User.get(User.username == username)
+        if user is None or not verify_password(username, password):
+            return None
+
+        return user
+
+    def verify_password(self, username, password):
+        try:
+            user = User.get(User.username == username)
+        except DoesNotExist:
+            # User not found in the database
+            return False
+
+        if check_password_hash(user.password, password):
+            # Updates last_login timestamp
+            user.last_login = datetime.datetime.now()
+            user.save()
+            return True
+
+        return False
     """
     The admin fetch returns invisible posts + more timestamp details.
     """
